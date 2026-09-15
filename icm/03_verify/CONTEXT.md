@@ -356,6 +356,72 @@ Example:
 
 Use a verification artifact when the task benefits from a durable record of what was checked before the conclusions are promoted into project documentation.
 
+Every substantial verification artifact should begin with a concise `Human Review Summary` before the detailed verification content.
+
+The summary is an acceptance aid for Mike, not merely a shorter agent report. It should make the result, proven behavior, evidence gaps, review priorities, routing, and next action clear without duplicating the detailed evidence.
+
+The `Human Review Summary` should contain these sections near the top:
+
+### Verification Result
+
+State exactly one status:
+
+- PASS
+- PASS WITH LIMITATIONS
+- FAIL
+- BLOCKED
+
+Use the status meanings defined in this stage and do not claim completion more strongly than the evidence supports.
+
+### What Was Proven
+
+- Include only concise, evidence-backed claims.
+- Connect each claim to the relevant check or observation without repeating raw output.
+- If nothing was proven, say `None.`
+
+### What Was Not Proven
+
+- Explicitly identify limitations, untested assumptions, unavailable environments, and other evidence gaps.
+- Do not invent a limitation merely to populate the section.
+- If the relevant behavior was sufficiently proven with no meaningful evidence gap, say `None.`
+
+### Mike's Review Focus
+
+- Identify the most important evidence, files, behavior, or failures Mike should personally inspect.
+- Explain briefly why each focus area matters when that is not obvious.
+- If no special human review focus exists, say `None.`
+
+### Learning Takeaways
+
+- Concisely explain the most important engineering lessons revealed by verification.
+- Keep learning takeaways separate from verification evidence.
+- Do not turn the artifact into a tutorial or add unrelated concepts.
+- If there is no meaningful takeaway, say `None.`
+
+### Failures / Limitations and Routing
+
+- Describe confirmed failures and meaningful limitations without hiding them behind the overall status.
+- Route defective implementation to Build.
+- Route defective or unresolved requirements, design, architecture, acceptance criteria, or implementation approach to Plan.
+- Keep confirmed facts separate from hypotheses.
+- Do not repair production code inside Verify unless Mike explicitly asks for that workflow.
+- If there are no failures or meaningful limitations to route, say `None.`
+
+### Next Action
+
+Clearly state whether the task should:
+
+- return to Plan,
+- return to Build,
+- remain blocked,
+- or proceed to final human review and commit consideration.
+
+### Final Acceptance Checklist
+
+When applicable, provide a concise checklist Mike can use to determine whether the work is ready to be accepted as the current project state. The checklist should reflect the actual acceptance criteria, evidence, limitations, regression status, security considerations, diff review, and justified documentation updates.
+
+After the `Human Review Summary`, retain the detailed verification content needed to support independent review. Do not repeat the entire detailed artifact in the summary, and preserve progressive disclosure.
+
 A useful verification artifact may contain:
 
 ### Verification Target
@@ -398,6 +464,8 @@ One of:
 Do not create a verification output file for every trivial change.
 
 Do not turn verification artifacts into permanent general project documentation.
+
+Do not invent decisions, learning requirements, blockers, failures, or limitations merely to fill a summary section. Use `None.` whenever a section has nothing meaningful to report.
 
 ---
 
@@ -582,3 +650,5 @@ Any durable project documentation that should now be updated or was updated beca
 The most important engineering lesson, system behavior, or verification concept from the task.
 
 Do not claim completion more strongly than the evidence supports.
+
+When no verification artifact is justified, the final Verify handoff should still apply the same human-review principles where practical: state the result, distinguish what was and was not proven, direct Mike to the most important evidence, separate learning from evidence, route failures correctly, state the next action, and provide an acceptance checklist when applicable.

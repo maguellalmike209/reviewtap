@@ -327,7 +327,58 @@ or:
 
 `notes.md`
 
-A complete plan should normally contain:
+Every substantial plan artifact should begin with a concise `Human Review Summary` before the detailed technical plan.
+
+The summary is an approval aid for Mike, not merely a shorter agent report. It should be actionable, use plain language, and expose only the decisions, knowledge, blockers, and checks that matter before Build.
+
+The `Human Review Summary` should contain these sections near the top:
+
+### Mike's Next Actions
+
+- List no more than five concrete actions.
+- Clearly distinguish actions Mike must take now from work Codex will perform later.
+- Do not include routine agent work as if it requires Mike's involvement.
+- If Mike has no immediate action, say `None.`
+
+### Decisions for Mike to Approve
+
+- Include only genuine decisions that require human approval.
+- For each decision, state Codex's recommendation and a short reason.
+- Do not invent a decision merely to populate the section.
+- If there are no decisions requiring approval, say `None.`
+
+### Learn Before Build
+
+Divide relevant concepts into:
+
+#### Must Understand Before Build
+
+For each concept Mike must understand to approve the plan responsibly, state the level of understanding needed for that approval. Do not turn this section into a full tutorial.
+
+#### Can Learn During Build
+
+List concepts that will be easier or more useful to learn while inspecting the implementation.
+
+#### Not Needed Yet
+
+List only concepts that may appear relevant but are not necessary for the current approval or Build. Do not add speculative topics merely to fill this section.
+
+Use `None.` for any category with nothing meaningful to report.
+
+### Current Blockers
+
+- Include only issues that actually prevent Build from beginning.
+- For each blocker, give the next concrete diagnostic or resolution step.
+- Keep risks, open questions, and deferred work in the detailed plan unless they truly block Build.
+- If Build is not blocked, say `None.`
+
+### Approval Checklist
+
+Provide a concise checklist Mike can use to determine whether Build may begin. It should cover only the approvals, required understanding, resolved blockers, scope, acceptance criteria, and verification approach material to the task.
+
+After the `Human Review Summary`, retain the detailed technical plan needed by Build and Verify. Do not repeat the entire detailed plan in the summary.
+
+A complete plan should normally contain, after the `Human Review Summary`:
 
 ### Objective
 
@@ -376,6 +427,8 @@ Remaining uncertainty, assumptions, or decisions.
 The plan may be shorter when the task is simpler.
 
 Do not add sections merely to make a plan appear more formal.
+
+Do not invent decisions, learning requirements, blockers, or limitations merely to fill a summary section. Use `None.` whenever a summary section has nothing meaningful to report. Preserve progressive disclosure: Mike should be able to review the summary first and consult the technical detail only where needed.
 
 ---
 
@@ -450,3 +503,5 @@ The build stage may discover new information.
 If implementation reveals that a major planning assumption is wrong, do not force the original plan.
 
 Pause, identify the discrepancy, and revise the plan or relevant project documentation before continuing.
+
+When no plan artifact is justified, the final Plan handoff should still apply the same human-review principles where practical: make Mike's immediate actions, genuine approval decisions, required pre-Build understanding, actual blockers, and readiness to begin Build clear without creating unnecessary process.

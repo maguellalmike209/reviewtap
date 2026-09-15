@@ -359,6 +359,69 @@ The source code and Git diff are already the primary record of implementation.
 
 Do not duplicate code descriptions into large AI-generated reports without a real need.
 
+When a substantial Build artifact is useful, it should begin with a concise `Human Review Summary` before detailed Build notes or implementation evidence.
+
+The summary is a review aid for Mike, not merely a shorter agent report. It should help him understand the implemented behavior, focus his review, assess the evidence, and decide whether the work is ready for Verify.
+
+The `Human Review Summary` should contain these sections near the top:
+
+### What Changed
+
+- Concisely describe the implemented behavior.
+- Distinguish what was created, what was modified, and what was intentionally left untouched.
+- Do not duplicate a file-by-file diff narrative.
+
+### Mike's Review Focus
+
+- Identify the specific files, behavior, dependencies, or commands most worth Mike's attention.
+- Explain briefly why each focus area matters when that is not obvious.
+- Do not require generated or mechanical files to be reviewed line by line unless they contain a meaningful risk.
+- If no special human review focus exists, say `None.`
+
+### Learn From This Build
+
+Divide concepts demonstrated by the actual implementation into:
+
+#### Must Understand Before Verify
+
+List only concepts Mike needs to understand before deciding to hand the implementation to Verify.
+
+#### Useful to Learn During Review
+
+List concepts that will improve Mike's understanding while he inspects the actual change.
+
+#### Not Important Yet
+
+List only concepts that may appear relevant but are not important to the current implementation review.
+
+Use `None.` for any category with nothing meaningful to report. Keep this section focused on the implementation that was actually built rather than turning the artifact into a general tutorial.
+
+### Checks Run
+
+For each check, record:
+
+- the command or other evidence,
+- the result,
+- what the check proves,
+- and what it does not prove.
+
+Do not describe code inspection alone as runtime testing.
+
+### Current Limitations or Blockers
+
+- Clearly distinguish expected deferred or out-of-scope work from actual defects or blockers.
+- State the practical impact and next step for each actual defect or blocker.
+- Do not invent limitations merely to fill the section.
+- If there are none, say `None.`
+
+### Ready for Verify Checklist
+
+Provide a concise checklist Mike can use to decide whether the implementation should be handed to Verify. It should cover the approved scope, meaningful deviations, relevant checks, unresolved defects or blockers, and the continued validity of the acceptance criteria.
+
+Detailed Build notes or implementation evidence may follow the `Human Review Summary` when useful. Do not repeat the entire detailed artifact in the summary, and preserve progressive disclosure.
+
+Do not invent decisions, learning requirements, blockers, or limitations merely to fill a summary section. Use `None.` whenever a summary section has nothing meaningful to report.
+
 When an output file is useful, give it a descriptive task-specific name such as:
 
 `card-entry-session-build-notes.md`
@@ -372,6 +435,8 @@ or:
 `notes.md`
 
 Build outputs are temporary working artifacts, not permanent project truth.
+
+When the code and Git diff are sufficient and no Build artifact is justified, the final Build handoff should still apply the same human-review principles where practical: summarize what changed, direct Mike to the highest-value review areas, explain relevant learning, report checks with their evidentiary limits, distinguish deferred work from defects, and make readiness for Verify clear.
 
 ---
 
