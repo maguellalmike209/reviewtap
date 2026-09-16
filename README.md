@@ -12,7 +12,7 @@ Google Review access is not restricted by the customer's internal ReviewTap rati
 
 ## Current Status
 
-ReviewTap is currently in the repository and development-foundation stage.
+ReviewTap now has a verified application foundation.
 
 Product functionality has not yet been implemented.
 
@@ -24,11 +24,42 @@ The repository currently contains:
 - implementation task planning,
 - global AI-agent instructions,
 - context routing,
-- and a lightweight Plan → Build → Verify ICM workflow.
+- a lightweight Plan → Build → Verify ICM workflow,
+- and a runnable Next.js application with TypeScript, Tailwind CSS, and ESLint.
 
-The next application-development task is:
+The completed application-foundation task is:
 
 `RT-001 — Initialize Next.js Application`
+
+RT-001 passed independent verification. The next planned task is `RT-002 — Establish Application Folder Conventions`.
+
+---
+
+## Local Development
+
+ReviewTap uses Node.js 24 LTS and npm.
+
+Install the locked dependencies:
+
+```powershell
+npm.cmd ci
+```
+
+Start the development server:
+
+```powershell
+npm.cmd run dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000).
+
+Run the project checks:
+
+```powershell
+npm.cmd run typecheck
+npm.cmd run lint
+npm.cmd run build
+```
 
 ---
 
@@ -122,11 +153,4 @@ The goal is to keep AI-assisted development focused, reviewable, verifiable, and
 
 ## Current Priority
 
-Before beginning application implementation:
-
-1. complete the repository consistency review,
-2. stress-test the ICM with Codex,
-3. inspect the final Git diff,
-4. commit the repository foundation,
-5. push the clean checkpoint to GitHub,
-6. then begin `RT-001`.
+Review the verified RT-001 application foundation, then begin RT-002 when ready.

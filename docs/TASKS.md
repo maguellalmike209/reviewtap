@@ -125,7 +125,15 @@ Meaningful changes to the development order should be intentional rather than ac
 
 ## RT-001 — Initialize Next.js Application
 
-**Status:** NOT STARTED
+**Status:** COMPLETE
+
+Independent verification passed against the approved RT-001 Plan. The application foundation is ready for final human review and commit consideration.
+
+**Plan:** [RT-001 initialization plan](../icm/01_plan/output/rt-001-initialize-nextjs-plan.md)
+
+**Build notes:** [RT-001 Build handoff](../icm/02_build/output/rt-001-initialize-nextjs-build-notes.md)
+
+**Verification:** [RT-001 verification](../icm/03_verify/output/rt-001-initialize-nextjs-verification.md)
 
 ### Goal
 
@@ -1361,20 +1369,11 @@ RT-093
 
 # Current Priority
 
-The current next development task is:
+The next planned development task is:
 
-## RT-001 — Initialize Next.js Application
+## RT-002 — Establish Application Folder Conventions
 
-Before implementation begins, complete the remaining repository-foundation work:
-
-- finish ReviewTap ICM and durable-document consistency review,
-- run the planned Codex/ICM stress tests,
-- review the complete Git diff,
-- commit the project foundation,
-- push the clean foundation to GitHub,
-- then begin RT-001 as a new coherent development task.
-
-No application implementation task should be marked started merely because repository documentation is being finalized.
+RT-001 passed independent verification. RT-002 remains NOT STARTED; no commit or push was performed during RT-001 Verify.
 
 ---
 

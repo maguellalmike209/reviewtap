@@ -31,13 +31,12 @@ When implementation details matter, inspect the actual code, tests, schema, conf
 
 ## 2. Current Product Implementation
 
-ReviewTap product functionality has not yet been implemented.
+ReviewTap now has a functioning application foundation. The root route renders a static placeholder page containing the `ReviewTap` heading and `Application foundation initialized.` message.
 
-The repository does not yet contain a functioning ReviewTap application.
+The application does not yet implement customer or business product workflows.
 
 The following major V1 product capabilities have not yet been implemented:
 
-- Next.js application functionality,
 - Supabase application integration,
 - database schema,
 - business records,
@@ -74,7 +73,7 @@ They are not proof of implementation.
 
 ## 3. Current Repository Foundation
 
-The repository currently contains the development foundation for building ReviewTap.
+The repository contains the verified development foundation for building ReviewTap.
 
 This includes:
 
@@ -86,6 +85,20 @@ This includes:
 - intended V1 architecture,
 - durable product and technical decisions,
 - and the implementation task plan.
+
+The runnable application foundation includes:
+
+- Next.js 16 App Router with React 19,
+- TypeScript with strict checking,
+- Tailwind CSS through PostCSS,
+- ESLint with the Next.js configuration,
+- reproducible npm installation through `package-lock.json`,
+- development, type-check, lint, build, and production-start scripts,
+- the shared document shell in `app/layout.tsx`,
+- the root page in `app/page.tsx`,
+- and global styling in `app/globals.css`.
+
+Independent verification confirmed that the page renders with its intended Tailwind styling in development and production, refreshes during development, remains usable at a 375-pixel viewport without horizontal overflow, and produces a static production route.
 
 The ICM is designed to support:
 
@@ -103,21 +116,13 @@ They should not be confused with completed ReviewTap product functionality.
 
 ## 4. Current Development Position
 
-The repository is currently at the transition between:
+The repository now has its initial application foundation. Product workflows remain unimplemented.
 
-repository / ICM foundation
+The next planned development task is:
 
-and:
+## RT-002 — Establish Application Folder Conventions
 
-application implementation
-
-The current next development task is:
-
-## RT-001 — Initialize Next.js Application
-
-RT-001 is defined in `docs/TASKS.md`.
-
-Until RT-001 and later application tasks are implemented and sufficiently verified, this document should continue to state that ReviewTap product functionality has not yet been implemented.
+RT-002 is defined in `docs/TASKS.md` and depends on the verified RT-001 foundation.
 
 ---
 
@@ -194,21 +199,8 @@ Git retains historical versions.
 
 ---
 
-## 7. First Future Update
+## 7. Current Limitations
 
-The first meaningful product update to this document will likely occur after:
+The root page is intentionally a development placeholder. It does not yet provide NFC card entry, feedback capture, Google Review handoff, authentication, database access, dashboards, analytics, or deployment behavior.
 
-`RT-001 — Initialize Next.js Application`
-
-has been implemented and sufficiently verified.
-
-At that point, this document may begin describing verified foundation behavior such as:
-
-- the Next.js application exists,
-- the application runs locally,
-- the initial route renders,
-- TypeScript is functioning,
-- Tailwind is functioning,
-- and the production build succeeds.
-
-Only describe those behaviors after the relevant verification has actually occurred.
+Verification was local to the Windows development environment. Deployment and physical NFC behavior remain assigned to later tasks.
