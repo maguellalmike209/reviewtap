@@ -196,6 +196,8 @@ Never silently add major dependencies.
 
 Do not install packages merely to avoid writing a small amount of straightforward code.
 
+Before a clean or destructive dependency replacement operation such as `npm ci`, consider checking whether ReviewTap-specific development or production processes are still running and holding dependency files open.
+
 ---
 
 ## 9. Security and Secrets
@@ -388,6 +390,8 @@ Do not automatically:
 
 When suggesting a commit, propose a clear message describing one logical change.
 
+A verified task implementation commit should remain separate from subsequently approved ICM, process, or durable-decision refinements.
+
 Do not use destructive commands such as `git reset --hard`, forced pushes, or history rewriting without explaining the consequences and receiving explicit approval.
 
 Never discard Mike's existing uncommitted work merely to simplify the current task.
@@ -397,6 +401,8 @@ Never discard Mike's existing uncommitted work merely to simplify the current ta
 ## 15. Human Review and Decision Authority
 
 Mike remains the final decision-maker for the project.
+
+Project-owned agent instructions, including `AGENTS.md`, must not be automatically created, replaced, supplemented, or modified by framework or tooling behavior without Mike's explicit approval.
 
 For meaningful product, architecture, security, or dependency decisions, present the reasoning and relevant tradeoffs before locking in the choice.
 
