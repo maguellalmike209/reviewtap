@@ -398,6 +398,15 @@ Use the status meanings defined in this stage and do not claim completion more s
 - Do not turn the artifact into a tutorial or add unrelated concepts.
 - If there is no meaningful takeaway, say `None.`
 
+### Retrospective Candidates
+
+Build may surface possible candidates, but Verify provides the final task-level retrospective candidates after the available evidence is known.
+
+- **Decision Candidates:** List only potential durable product or technical decisions requiring human review.
+- **ICM Improvement Candidates:** List only potential improvements to agent instructions or the ICM workflow requiring human review.
+
+Candidates are surfaced for human review only. Do not automatically promote them into `docs/DECISIONS.md`, `AGENTS.md`, or other durable documentation. If a category has no meaningful candidates, say `None.`
+
 ### Failures / Limitations and Routing
 
 - Describe confirmed failures and meaningful limitations without hiding them behind the overall status.
