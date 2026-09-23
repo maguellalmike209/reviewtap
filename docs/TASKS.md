@@ -175,7 +175,7 @@ None.
 
 ## RT-002 — Establish Application Folder Conventions
 
-**Status:** NOT STARTED
+**Status:** COMPLETE
 
 ### Goal
 
