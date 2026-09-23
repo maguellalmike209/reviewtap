@@ -120,9 +120,9 @@ The repository now has its initial application foundation. Product workflows rem
 
 The next planned development task is:
 
-## RT-002 — Establish Application Folder Conventions
+## RT-003 — Configure Environment and Secret Handling
 
-RT-002 is defined in `docs/TASKS.md` and depends on the verified RT-001 foundation.
+RT-003 is defined in `docs/TASKS.md` as the next planned task. It has not begun.
 
 ---
 

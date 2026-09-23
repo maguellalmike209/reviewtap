@@ -96,6 +96,8 @@ Do not expand a task simply because adjacent improvements become visible during 
 
 Create a new task when additional work represents a separate meaningful objective.
 
+Before creating a standalone task, weigh its meaningful implementation or product impact, learning value, dependency or unlocking value, and risk or uncertainty. Use process in proportion to the task; a low-risk task with no implementation change does not automatically require a full Plan → Build → Verify artifact chain.
+
 ---
 
 ## 4. V1 Development Order
@@ -387,13 +389,13 @@ RT-012
 
 # PHASE 3 — NFC Card Entry and Interaction Sessions
 
-## RT-020 — Implement Public Card Resolution
+## RT-020 — Implement Public Card Resolution and Invalid States
 
 **Status:** NOT STARTED
 
 ### Goal
 
-Resolve a public NFC card identifier to the correct active ReviewTap card and business.
+Resolve a public NFC card identifier to the correct active ReviewTap card and business, with deliberate behavior for invalid or unavailable cards.
 
 ### Conceptual Route
 
@@ -404,7 +406,9 @@ Resolve a public NFC card identifier to the correct active ReviewTap card and bu
 - known active card resolves correctly,
 - unknown card fails deliberately,
 - inactive card fails deliberately,
-- missing or invalid business state is handled safely,
+- missing or invalid business or configuration state fails safely,
+- other unrecoverable card-entry failures fail safely,
+- invalid card entry does not create a successful interaction session,
 - browser-controlled data does not determine protected business configuration.
 
 ### Learning Focus
@@ -413,7 +417,8 @@ Resolve a public NFC card identifier to the correct active ReviewTap card and bu
 - server-side data access,
 - URL parameters,
 - validation,
-- public vs internal identifiers.
+- public vs internal identifiers,
+- deliberate error handling.
 
 ### Depends On
 
@@ -426,13 +431,19 @@ Yes.
 
 ---
 
-## RT-021 — Create Interaction Session
+## RT-021 — Create Interaction Session and Route Into Customer Experience
 
 **Status:** NOT STARTED
 
 ### Goal
 
-Create one interaction session when a valid ReviewTap card begins a customer experience.
+Create one interaction session when a valid ReviewTap card begins a customer experience, then route that interaction into the correct customer experience.
+
+### Conceptual Flow
+
+`/r/[cardId]`
+→ interaction-session creation
+→ `/feedback/[sessionToken]`
 
 ### Required Behavior
 
@@ -455,57 +466,11 @@ The interaction must later be able to support:
 - Google Review click activity,
 - or both.
 
-### Depends On
-
-RT-020
-
----
-
-## RT-022 — Route Valid Card Into Customer Experience
-
-**Status:** NOT STARTED
-
-### Goal
-
-Take a valid NFC card interaction from card entry into the corresponding ReviewTap customer session.
-
-### Conceptual Flow
-
-`/r/[cardId]`
-→ interaction-session creation
-→ `/feedback/[sessionToken]`
-
-### Required Behavior
+Route the valid interaction into `/feedback/[sessionToken]` and ensure:
 
 - the correct session is used,
 - the correct business experience is loaded,
 - invalid session state is not treated as valid.
-
-### Depends On
-
-RT-021
-
----
-
-## RT-023 — Build Invalid / Unavailable Card Experience
-
-**Status:** NOT STARTED
-
-### Goal
-
-Provide deliberate customer-facing behavior when a card cannot be used.
-
-### Cases
-
-- unknown card,
-- inactive card,
-- missing business,
-- invalid business configuration,
-- other unrecoverable card-entry failures.
-
-### Required Behavior
-
-Invalid card entry must not create a successful interaction session.
 
 ### Depends On
 
@@ -515,67 +480,87 @@ RT-020
 
 # PHASE 4 — Customer Feedback Experience
 
-## RT-030 — Build Mobile-First Customer Experience Shell
+## RT-030 — Build Mobile-First Customer Feedback Experience
 
 **Status:** NOT STARTED
 
 ### Goal
 
-Create the reusable customer-facing ReviewTap experience for a valid interaction session.
+Create the complete mobile-first private-feedback experience for a valid interaction session.
 
-### Initial UI
+### Required UI and Behavior
 
 - business identity,
-- clear feedback prompt,
-- mobile-first layout,
-- loading state,
-- invalid-session/error state,
-- appropriate location for the Google Review action.
+- clear private-feedback prompt,
+- mobile-first responsive layout,
+- loading and error states,
+- interactive internal 1–5 rating,
+- touch-friendly and accessible rating controls,
+- a clearly selected rating state,
+- reusable controls where practical,
+- optional written comment,
+- optional name,
+- optional email,
+- optional phone,
+- follow-up permission where applicable,
+- marketing consent only when actually collected,
+- clear communication that optional fields are optional.
 
-### Important Requirement
+### Product Boundaries
 
-The UI architecture must allow Google Review access to exist independently from feedback submission.
+- The internal ReviewTap rating remains separate from any Google star rating.
+- Private feedback is not presented as automatically public.
+- The architecture must continue to allow Google Review access independently from feedback submission.
+- Follow-up permission and marketing consent must not be inferred solely from the presence of contact information.
+- Consent state must not be collected for functionality that does not yet require it.
 
 ### Learning Focus
 
 - React components,
-- responsive design,
-- Tailwind,
-- server vs client components.
+- responsive Tailwind UI,
+- client and server component boundaries,
+- React state and events,
+- controlled and uncontrolled inputs as appropriate,
+- forms,
+- form submission and client validation,
+- accessibility,
+- form data and TypeScript.
 
 ### Depends On
 
-RT-022
+RT-021
 
 ---
 
-## RT-031 — Build Interactive Internal Rating Control
+## RT-031 — Validate and Persist Feedback Submission
 
 **Status:** NOT STARTED
 
 ### Goal
 
-Allow the customer to select an internal ReviewTap 1–5 rating.
+Validate private ReviewTap feedback authoritatively and persist valid submissions with the correct relationships.
 
-### Requirements
+### Required Behavior
 
-- touch-friendly,
-- accessible,
-- clearly selected state,
-- reusable where practical.
-
-### Important Product Boundary
-
-The ReviewTap internal rating must remain separate from any Google star rating.
-
-Selecting an internal rating must not automatically determine a Google rating.
+- validate the interaction session server-side,
+- validate the internal 1–5 rating,
+- enforce written-comment limits,
+- validate optional contact fields,
+- validate consent when applicable,
+- enforce the defined duplicate-submission behavior,
+- ensure one interaction normally produces at most one completed V1 feedback submission,
+- persist valid feedback,
+- associate it with the correct interaction, card, and business,
+- ensure failures do not produce false success,
+- ensure Google Review access does not depend on successful feedback submission.
 
 ### Learning Focus
 
-- React state,
-- events,
-- controlled interactions,
-- accessibility.
+- trust boundaries,
+- server validation,
+- database writes,
+- defensive application design,
+- error handling.
 
 ### Depends On
 
@@ -583,123 +568,7 @@ RT-030
 
 ---
 
-## RT-032 — Build Feedback Form
-
-**Status:** NOT STARTED
-
-### Goal
-
-Collect the private customer feedback required by V1.
-
-### Inputs
-
-Initially:
-
-- internal rating,
-- optional written comment,
-- optional name,
-- optional email,
-- optional phone.
-
-### Requirements
-
-- optional inputs are clearly identified,
-- the form does not imply that private feedback will automatically become public,
-- customer-authored written feedback remains available for later reuse when appropriate.
-
-### Learning Focus
-
-- forms,
-- controlled or uncontrolled inputs as appropriate,
-- form submission,
-- client validation,
-- TypeScript form data.
-
-### Depends On
-
-RT-031
-
----
-
-## RT-033 — Add Follow-Up and Consent Controls
-
-**Status:** NOT STARTED
-
-### Goal
-
-Represent customer communication choices explicitly.
-
-### Requirements
-
-Distinguish:
-
-- feedback follow-up permission,
-- marketing consent when actually collected.
-
-Do not infer either permission solely from the presence of a phone number or email address.
-
-Do not collect consent state for functionality that does not yet require it.
-
-### Depends On
-
-RT-032
-
----
-
-## RT-034 — Implement Server-Side Feedback Validation
-
-**Status:** NOT STARTED
-
-### Goal
-
-Validate private ReviewTap feedback authoritatively before persistence.
-
-### Validate
-
-- interaction session,
-- internal rating,
-- written-comment limits,
-- optional contact fields,
-- applicable consent data,
-- duplicate-submission behavior as defined by the schema and plan.
-
-### Learning Focus
-
-- trust boundaries,
-- server validation,
-- defensive application design.
-
-### Depends On
-
-RT-032
-RT-033
-
----
-
-## RT-035 — Persist Feedback Submission
-
-**Status:** NOT STARTED
-
-### Goal
-
-Store valid private customer feedback and associate it with the correct interaction, business, and card.
-
-### Required Behavior
-
-- valid submission is stored,
-- interaction association is correct,
-- one interaction normally produces at most one completed V1 feedback submission,
-- defined duplicate behavior is respected,
-- failures do not produce false success UI,
-- Google Review access does not depend on successful feedback submission.
-
-### Depends On
-
-RT-034
-
----
-
-## RT-036 — Build Feedback Success Experience
+## RT-032 — Build Feedback Completion Experience
 
 **Status:** NOT STARTED
 
@@ -709,26 +578,26 @@ Clearly confirm successful private ReviewTap feedback submission and provide app
 
 ### Required Behavior
 
-- successful private submission is clearly communicated,
-- the customer understands that ReviewTap feedback is not automatically a public Google Review,
-- the Google Review opportunity remains available,
-- written feedback can support the later copy-and-review action.
+- clearly confirm successful private feedback,
+- make clear that private ReviewTap feedback is not automatically a Google Review,
+- preserve the Google Review opportunity,
+- preserve customer-authored written feedback for later copy and reuse behavior.
 
 ### Depends On
 
-RT-035
+RT-031
 
 ---
 
 # PHASE 5 — Google Review Handoff and Feedback Reuse
 
-## RT-040 — Implement Google Review Handoff Route
+## RT-040 — Implement Google Review Handoff and Always-Available Review Action
 
 **Status:** NOT STARTED
 
 ### Goal
 
-Implement the ReviewTap-controlled Google Review handoff.
+Implement the customer-facing Google Review action and the ReviewTap-controlled Google Review handoff.
 
 ### Conceptual Route
 
@@ -742,11 +611,23 @@ Implement the ReviewTap-controlled Google Review handoff.
 - record the ReviewTap-observable Google Review click,
 - redirect to the configured destination.
 
+The Google Review action must remain available:
+
+- before or without ReviewTap feedback submission,
+- after ReviewTap feedback submission,
+- for low internal ratings,
+- for high internal ratings,
+- regardless of positive or negative written sentiment.
+
 ### Product Requirements
 
 The route must work whether or not ReviewTap feedback was submitted.
 
 A feedback-submission record must not be required.
+
+Presentation may vary, but access may not be selectively suppressed.
+
+The internal ReviewTap rating must not automatically populate or determine the Google star rating.
 
 ### Security Requirement
 
@@ -777,40 +658,7 @@ Yes.
 
 ---
 
-## RT-041 — Add Always-Available Google Review Action
-
-**Status:** NOT STARTED
-
-### Goal
-
-Allow customers to deliberately access the business's Google Review experience from the ReviewTap customer experience.
-
-### Required Behavior
-
-The Google Review action must remain available:
-
-- before or without ReviewTap feedback submission,
-- after ReviewTap feedback submission,
-- for low internal ratings,
-- for high internal ratings,
-- and regardless of positive or negative written sentiment.
-
-### Product Boundary
-
-Presentation may vary.
-
-Access may not be selectively suppressed.
-
-The ReviewTap internal rating must not automatically populate or determine the Google star rating.
-
-### Depends On
-
-RT-030
-RT-040
-
----
-
-## RT-042 — Copy Customer-Authored Feedback and Continue to Google
+## RT-041 — Copy Customer-Authored Feedback and Continue to Google
 
 **Status:** NOT STARTED
 
@@ -862,8 +710,8 @@ The customer remains responsible for:
 
 ### Depends On
 
-RT-035
-RT-041
+RT-031
+RT-040
 
 ---
 
@@ -1036,7 +884,7 @@ Optional contact information must not automatically be interpreted as a persiste
 ### Depends On
 
 RT-060
-RT-035
+RT-031
 
 ---
 
@@ -1150,7 +998,7 @@ without evidence.
 ### Depends On
 
 RT-021
-RT-035
+RT-031
 RT-040
 
 ### Requires Plan Stage
@@ -1281,7 +1129,9 @@ Required owner-facing functionality complete.
 
 ### Goal
 
-Polish the customer and owner interfaces after functionality is stable.
+Perform the final responsive and accessibility audit and refinement pass after functionality is stable.
+
+Basic accessibility and responsive behavior should be considered during each feature's implementation. This task is the final cross-product refinement pass, not the first time those concerns are introduced.
 
 ### Focus
 
@@ -1371,9 +1221,9 @@ RT-093
 
 The next planned development task is:
 
-## RT-002 — Establish Application Folder Conventions
+## RT-003 — Configure Environment and Secret Handling
 
-RT-001 passed independent verification. RT-002 remains NOT STARTED; no commit or push was performed during RT-001 Verify.
+RT-001 and RT-002 are complete. RT-003 is the next planned task and has not begun.
 
 ---
 
