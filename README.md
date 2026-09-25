@@ -39,6 +39,16 @@ RT-001 passed independent verification. The next planned task is `RT-002 — Est
 
 ReviewTap uses Node.js 24 LTS and npm.
 
+### Environment configuration
+
+ReviewTap currently requires no environment variables. When local configuration is introduced, real developer-specific values belong in `.env.local` at the repository root. `.env.local` and other secret-bearing `.env*` files must not be committed.
+
+RT-010 will create `.env.example` as the tracked manifest of required environment-variable names when actual Supabase requirements exist. That file must contain only empty or unmistakably non-secret example values.
+
+Environment variables are server-only by default. Use the `NEXT_PUBLIC_` prefix only for values that genuinely need to be available in browser code and are safe for any site user to obtain. Never give a secret this prefix merely for convenience.
+
+Git ignore rules prevent ordinary accidental tracking; they do not repair a secret that was already committed. Treat a committed credential as exposed, revoke or rotate it, and assess whether Git history also requires remediation.
+
 Install the locked dependencies:
 
 ```powershell
